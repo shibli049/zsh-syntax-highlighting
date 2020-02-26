@@ -28,15 +28,16 @@
 # vim: ft=zsh sw=2 ts=2 et
 # -------------------------------------------------------------------------------------------------
 
-# See also alias-precommand-option-argument1.zsh
-local -a sudo_u; sudo_u=(sudo -u)
-sudo(){}
+# Test elision of some, but not all of the words
+# See issue #667 for the case of eliding all words
+local -a x; x=(sudo "")
 
-BUFFER='$sudo_u phy1729 echo foo'
+BUFFER=$'$x -u phy1729 ls'
 
 expected_region_highlight=(
-  '1 7 precommand' # $sudo_u
-  '9 15 default' # phy1729
-  '18 20 command "issue #540"' # echo (not builtin)
-  '22 24 default' # foo
+  '1 2 precommand' # $x
+  # The "" is elided.  If it weren't elided, the «ls» would be highlighted as an ordinary argument.
+  '4 5 single-hyphen-option' # -u
+  '7 13 default' # phy1729
+  '15 16 command' # ls
 )

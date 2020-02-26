@@ -28,15 +28,11 @@
 # vim: ft=zsh sw=2 ts=2 et
 # -------------------------------------------------------------------------------------------------
 
-# See also alias-precommand-option-argument1.zsh
-local -a sudo_u; sudo_u=(sudo -u)
-sudo(){}
+alias '$foo'='echo alias'
+local foo; foo=(echo param)
 
-BUFFER='$sudo_u phy1729 echo foo'
+BUFFER='$foo'
 
 expected_region_highlight=(
-  '1 7 precommand' # $sudo_u
-  '9 15 default' # phy1729
-  '18 20 command "issue #540"' # echo (not builtin)
-  '22 24 default' # foo
+  '1 4 alias' # $foo
 )
