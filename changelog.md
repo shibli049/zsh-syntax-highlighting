@@ -1,6 +1,94 @@
+# Changes in HEAD
+
+- Document `$ZSH_HIGHLIGHT_MAXLENGTH`.
+  [#698]
+
+- Optimize highlighting unquoted words (words that are not in single quotes, double quotes, backticks, or dollar-single-quotes)
+  [#730]
+
+- Redirection operators (e.g., `<` and `>`) are now highlighted by default
+  [#646]
+
+- Propertly terminate `noglob` scope in try/always blocks
+  [#577]
+
+- Don't error out when `KSH_ARRAYS` is set in the calling scope
+  [#622, #689]
+
+- Literal semicolons in array assignments (`foo=( bar ; baz )`) are now
+  highlighted as errors.
+  [3ca93f864fb6]
+
+- Command separators in array assignments (`foo=( bar | baz )`) are now
+  highlighted as errors.
+  [#651, 81267ca3130c]
+
+- Support parameter elision in command position (e.g., `$foo ls` where `$foo` is unset or empty)
+  [#667]
+
+- Don't consider the filename in `sudo -e /path/to/file` to be a command position
+  [#678]
+
+- Don't look up absolute directory names in $cdpath
+  [2cc2583f8f12, part of #669]
+
+- Fix `exec 2>&1;` being highlighted as an error.
+  [#676]
+
+- Fix `: $(<*)` being highlighted as globbing.
+  [#582]
+
+- Fix `cat < *` being highlighting as globbing when the `MULTIOS` option is unset.
+  [#583]
+
+- Fix `echo >&2` highlighting the `2` as a filename if a file by that name happened to exist
+  [#694, part of #645]
+
+- Fix `echo >&-` highlighting the `-` as a filename if a file by that name happened to exist
+  [part of #645]
+
+- Fix `echo >&p` highlighting the `p` as a filename if a file by that name happened to exist
+  [part of #645]
+
+- Fix wrong highlighting of unquoted parameter expansions under zsh 5.2 and older
+  [e165f18c758e]
+
+- Highlight global aliases
+  [#700]
+
+- Highlight `: =nosuchcommand' as an error (when the `EQUALS` option hasn't been unset).
+  [#430]
+
+- Highlight reserved word after assignments as errors (e.g., `foo=bar (ls;)`)
+  [#461]
+
+- Correctly highlight `[[ foo && bar || baz ]]`.
+
+- Highlight non-executable files in command position correctly (e.g., `% /etc/passwd`)
+  [#202, #669]
+
+- Highlight directories in command position correctly, including `AUTO_CD` support
+  [#669]
+
+- Recognize `env` as a precommand (e.g., `env FOO=bar ls`)
+
+- Recognize `strace` as a precommand
+
+- Fix an error message on stderr before every prompt when the `WARN_NESTED_VAR` zsh option is set:
+  `_zsh_highlight_main__precmd_hook:1: array parameter _zsh_highlight_main__command_type_cache set in enclosing scope in function _zsh_highlight_main__precmd_hook`
+  [#727, #731, #732, #733]
+
+- Fix highlighting of alias whose definitions use a simple command terminator
+  (such as `;`, `|`, `&&`) before a newline
+  [#677; had regressed in 0.7.0]
+
+- Highlight arithmetic expansions (e.g., `$(( 42 ))`)
+  [#607 #649 #704]
+
 # Changes in version 0.7.1
 
 - Remove out-of-date information from the 0.7.0 changelog.
+
 
 # Changes in version 0.7.0
 
@@ -34,7 +122,7 @@ This is a stable bugfix and feature release.  Major new features and changes inc
 
 - Highlight numeric globs (e.g., `echo /lib<->`)
 
-- Assorted improvement to aliases highlighting
+- Assorted improvements to aliases highlighting
   (e.g.,
    `alias sudo_u='sudo -u'; sudo_u jrandom ls`,
    `alias x=y y=z z=nosuchcommand; x`,
@@ -72,6 +160,7 @@ Known issues include:
   before a newline will incorrectly be highlighted as an error.  See issue #677
   for examples and workarounds.
   [#677]
+  [UPDATE: Fixed in 0.8.0]
 
 
 # Changes in version 0.6.0
